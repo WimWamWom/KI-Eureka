@@ -67,10 +67,6 @@ pip install -r requirements.txt
 
 **Schritt 5: HuggingFace-Login**
 ```powershell
-# Setup-Skript ausführen
-.\setup_mistral.ps1
-
-# ODER manuell:
 huggingface-cli login
 # Token eingeben von: https://huggingface.co/settings/tokens
 ```
@@ -90,19 +86,37 @@ cd KI-Eureka
 # scp -r C:\Users\wroehner\Desktop\Git\KI-Eureka user@server:~/
 ```
 
-**Schritt 2: Automatische Installation**
+**Schritt 2: System-Pakete installieren**
 ```bash
-# Skripte ausführbar machen
-chmod +x install_linux.sh setup_hf_linux.sh
-
-# Installation starten (dauert 5-10 Minuten)
-./install_linux.sh
-
-# HuggingFace-Login
-./setup_hf_linux.sh
+sudo apt update
+sudo apt install -y python3.11 python3.11-venv python3.11-dev build-essential liblzma-dev
 ```
 
-**Fertig!** Die Installation ist komplett automatisch.
+**Schritt 3: Virtuelle Umgebung erstellen und aktivieren**
+```bash
+python3.11 -m venv venv
+source venv/bin/activate
+```
+
+**Schritt 4: PyTorch installieren**
+```bash
+# Für NVIDIA GPU mit CUDA 12.1
+pip install torch --index-url https://download.pytorch.org/whl/cu121
+
+# ODER für CUDA 11.8
+pip install torch --index-url https://download.pytorch.org/whl/cu118
+```
+
+**Schritt 5: Weitere Pakete installieren**
+```bash
+pip install -r requirements.txt
+```
+
+**Schritt 6: HuggingFace-Login**
+```bash
+huggingface-cli login
+# Token eingeben von: https://huggingface.co/settings/tokens
+```
 
 ---
 
@@ -162,30 +176,14 @@ python main.py jsonl
 
 **⚠️ WICHTIG: Training dauert 1-3 Stunden!**
 
-**Auf Linux-Server (empfohlen):**
+**Linux oder Windows:**
 ```bash
-# Screen-Session starten (damit Training nach SSH-Disconnect weiterläuft)
-screen -S ki-training
-
-# Virtuelle Umgebung aktivieren
-source venv/bin/activate
-
-# Training starten
 python main.py training
-
-# Optional: Mit mehr Durchläufen für bessere Qualität
-python main.py training --epochs 5
-
-# Screen verlassen (Training läuft weiter)
-# Drücken Sie: Strg+A, dann D
-
-# Später wieder verbinden:
-screen -r ki-training
 ```
 
-**Auf Windows:**
-```powershell
-python main.py training
+**Optional (mehr Qualität):**
+```bash
+python main.py training --epochs 5
 ```
 
 **Was passiert:**
@@ -364,7 +362,7 @@ python main.py konvertiere daten/eingabe/ihre-datei.xlsx
 
 ## 🎯 Zusammenfassung in 5 Schritten
 
-1. **Installation:** `./install_linux.sh` (Linux) oder manuelle Installation (Windows)
+1. **Installation:** Python + venv + Abhängigkeiten installieren
 2. **Trainingsdaten:** Excel + XML in `daten/trainingsdaten/` kopieren
 3. **Training:** `python main.py jsonl` → `python main.py training`
 4. **Testen:** `python main.py test` (optional)
@@ -484,9 +482,6 @@ KI-Eureka/
 ├── main.py                      # Hauptprogramm (alle Modi)
 ├── config.yaml                  # Konfiguration
 ├── requirements.txt             # Python-Abhängigkeiten
-├── install_linux.sh             # Linux-Installation (automatisch)
-├── setup_hf_linux.sh            # HuggingFace-Setup Linux
-├── setup_mistral.ps1            # HuggingFace-Setup Windows
 ├── core/                        # Programm-Module
 │   ├── config.py                # Konfiguration laden
 │   ├── excel_parser.py          # Excel einlesen
