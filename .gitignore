@@ -1,0 +1,52 @@
+# ── Virtuelle Umgebung ──────────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+
+# ── Python-Artefakte ────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Modell-Gewichte (zu groß für Git, mehrere GB) ───────────────
+modell/modell_output/
+modell/checkpoints/
+modell/logs/
+
+# ── HuggingFace Cache ────────────────────────────────────────────
+.cache/
+
+# ── Daten – Ausgaben (generiert, nicht im Repo nötig) ───────────
+daten/ausgabe/
+daten/trainingsdaten/erzeugte_json/
+daten/trainingsdaten/jsonl/
+daten/testdaten/erzeugte_json/
+
+# ── Logs ─────────────────────────────────────────────────────────
+*.log
+pipeline.log
+
+# ── IDE / OS ─────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
+
+# ── Sensible Daten ────────────────────────────────────────────────
+*.env
+.env
+secrets.yaml
+
+# ── Ordnerstruktur erhalten (trotz ignorierter Ordner) ───────────
+# .gitkeep-Dateien werden immer committed, damit leere Ordner
+# nach "git clone" automatisch vorhanden sind
+!.gitkeep
+!**/.gitkeep
+
+

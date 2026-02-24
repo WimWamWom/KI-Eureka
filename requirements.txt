@@ -1,0 +1,25 @@
+# Abhängigkeiten: Excel → XML Pipeline
+# Installation:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
+#   pip install -r requirements.txt
+
+# Excel-Verarbeitung
+openpyxl>=3.1.0
+
+# XML-Validierung
+lxml>=4.9.0
+
+# Konfiguration
+pyyaml>=6.0
+
+# KI / Training (GPU + CUDA erforderlich)
+torch>=2.0.0
+transformers>=4.36.0
+peft>=0.7.0
+bitsandbytes>=0.41.0
+accelerate>=0.25.0
+trl>=0.7.4
+datasets>=2.14.0
+sentencepiece>=0.1.99
+protobuf>=3.20.0
+

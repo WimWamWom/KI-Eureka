@@ -1,0 +1,44 @@
+# ============================================================
+# Konfiguration: Excel → XML Pipeline
+# ============================================================
+
+# --- KI-Modell ---
+modell_pfad: "modell/modell_output"                       # LoRA-Adapter (nach dem Training)
+basis_modell: "mistralai/Mistral-7B-Instruct-v0.3"        # HuggingFace Basis-Modell
+
+# --- Generierungsparameter ---
+max_new_tokens: 4096
+temperature: 0.3          # Niedrig = konsistenter Output
+top_p: 0.95
+
+# --- Fehlerbehandlung ---
+retries: 3                # Wiederholungen bei ungültigem XML
+
+# --- Pfade: Trainingsdaten (relativ zu main.py) ---
+trainingsdaten_excel: "daten/trainingsdaten/eingabe_excel"        # Excel-Eingabe für Training
+trainingsdaten_erzeugte_json: "daten/trainingsdaten/erzeugte_json" # JSON aus Excel (auto. erzeugt)
+trainingsdaten_xml: "daten/trainingsdaten/eingabe_xml"            # Referenz-XML
+jsonl_pfad: "daten/trainingsdaten/jsonl/training_data_json.jsonl" # JSONL-Ausgabe
+
+# --- Pfade: Testdaten ---
+testdaten_excel: "daten/testdaten/test_excel"                     # Excel-Eingabe für Test
+testdaten_erzeugte_json: "daten/testdaten/erzeugte_json"          # JSON aus Excel (auto. erzeugt)
+testdaten_xml: "daten/testdaten/test_xml"                         # Referenz-XML für Vergleich
+
+# --- Pfade: Finale Nutzung ---
+ausgabe_pfad: "daten/ausgabe"                                     # Ausgabe der KI
+schema_pfad: "daten/schema"                                       # XSD-Datei hier ablegen
+
+# --- Training (LoRA / QLoRA) ---
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+learning_rate: 0.0002
+batch_size: 4
+gradient_accumulation_steps: 4
+num_train_epochs: 3
+max_seq_length: 2048
+
+# --- Logging ---
+log_level: "INFO"         # DEBUG | INFO | WARNING | ERROR
+log_datei: "pipeline.log"
