@@ -118,7 +118,15 @@ def _erstelle_parser() -> argparse.ArgumentParser:
 
 def _modus_jsonl(config) -> int:
     """Erzeugt die JSONL-Trainingsdatei."""
-    from core.jsonl_ersteller import erstelle_jsonl
+    try:
+        from core.jsonl_ersteller import erstelle_jsonl
+    except ModuleNotFoundError as exc:
+        logger.error("Abhängigkeiten fehlen: %s", exc)
+        print("\n[FEHLER] Fehlende Python-Module oder System-Bibliotheken.")
+        print("Bitte installieren Sie die erforderlichen Abhängigkeiten:")
+        print("  - Auf Linux: sudo apt-get install liblzma-dev")
+        print("  - Dann Python neu kompilieren oder eine vorkompilierte Version verwenden")
+        return 1
 
     logger.info("Modus: JSONL erzeugen")
     try:
@@ -133,7 +141,15 @@ def _modus_jsonl(config) -> int:
 
 def _modus_training(config, epochs: int | None) -> int:
     """Führt das Fine-Tuning durch."""
-    from core.trainer import trainiere_modell
+    try:
+        from core.trainer import trainiere_modell
+    except ModuleNotFoundError as exc:
+        logger.error("Abhängigkeiten fehlen: %s", exc)
+        print("\n[FEHLER] Fehlende Python-Module oder System-Bibliotheken.")
+        print("Bitte installieren Sie die erforderlichen Abhängigkeiten:")
+        print("  - Auf Linux: sudo apt-get install liblzma-dev")
+        print("  - Dann Python neu kompilieren oder eine vorkompilierte Version verwenden")
+        return 1
 
     if epochs is not None:
         config.num_train_epochs = epochs
@@ -158,7 +174,15 @@ def _modus_training(config, epochs: int | None) -> int:
 
 def _modus_test(config) -> int:
     """Testet die KI anhand aller Dateien in daten/testdaten/."""
-    from core.tester import teste_modell, _drucke_bericht
+    try:
+        from core.tester import teste_modell, _drucke_bericht
+    except ModuleNotFoundError as exc:
+        logger.error("Abhängigkeiten fehlen: %s", exc)
+        print("\n[FEHLER] Fehlende Python-Module oder System-Bibliotheken.")
+        print("Bitte installieren Sie die erforderlichen Abhängigkeiten:")
+        print("  - Auf Linux: sudo apt-get install liblzma-dev")
+        print("  - Dann Python neu kompilieren oder eine vorkompilierte Version verwenden")
+        return 1
 
     logger.info("Modus: Test")
     print(f"\n{'='*65}")
