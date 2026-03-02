@@ -128,6 +128,20 @@ class KIGenerator:
         """Führt einen einzelnen Modell-Forward-Pass durch."""
         inputs = self._tokenizer(prompt, return_tensors="pt").to(self._modell.device)
 
+        token_laenge = inputs["input_ids"].shape[1]
+        max_laenge = self._config.max_seq_length
+        if token_laenge > max_laenge:
+            logger.error(
+                "Prompt (%d Tokens) überschreitet max_seq_length (%d). "
+                "Ergebnis wird wahrscheinlich fehlerhaft.",
+                token_laenge, max_laenge,
+            )
+        elif token_laenge > max_laenge * 0.7:
+            logger.warning(
+                "Prompt (%d Tokens) erreicht %.0f%% der max_seq_length (%d).",
+                token_laenge, 100 * token_laenge / max_laenge, max_laenge,
+            )
+
         with torch.no_grad():
             outputs = self._modell.generate(
                 **inputs,

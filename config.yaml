@@ -37,7 +37,7 @@ learning_rate: 0.0002
 batch_size: 4
 gradient_accumulation_steps: 4
 num_train_epochs: 3
-max_seq_length: 2048
+max_seq_length: 32768
 
 # --- Logging ---
 log_level: "INFO"         # DEBUG | INFO | WARNING | ERROR
