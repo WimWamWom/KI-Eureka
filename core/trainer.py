@@ -153,7 +153,7 @@ def trainiere_modell(config: AppConfig) -> Path:
     trainer = SFTTrainer(
         model=modell,
         train_dataset=dataset,
-        tokenizer=tokenizer,  # type: ignore[arg-type]
+        processing_class=tokenizer,
         args=training_args,
         dataset_text_field="text",  # type: ignore[call-arg]
         max_seq_length=config.max_seq_length,  # type: ignore[call-arg]
