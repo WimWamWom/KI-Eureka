@@ -19,9 +19,9 @@ from transformers import (
     AutoTokenizer,
     BitsAndBytesConfig,
     PreTrainedTokenizerBase,
-    TrainingArguments,
 )
-from trl import SFTTrainer
+from trl.trainer.sft_trainer import SFTTrainer
+from trl.trainer.sft_config import SFTConfig
 
 from .config import AppConfig
 
@@ -129,7 +129,7 @@ def trainiere_modell(config: AppConfig) -> Path:
                 f"{trainierbar:,}", f"{gesamt:,}", 100 * trainierbar / gesamt)
 
     # --- Training ---
-    training_args = TrainingArguments(
+    training_args = SFTConfig(
         output_dir=str(checkpoint_ordner),
         num_train_epochs=config.num_train_epochs,
         per_device_train_batch_size=config.batch_size,
@@ -148,16 +148,16 @@ def trainiere_modell(config: AppConfig) -> Path:
         lr_scheduler_type="cosine",
         report_to="none",
         save_total_limit=3,
-    )
-
-    trainer = SFTTrainer(
-        model=modell,
-        train_dataset=dataset,
-        processing_class=tokenizer,
-        args=training_args,
         dataset_text_field="text",  # type: ignore[call-arg]
         max_seq_length=config.max_seq_length,  # type: ignore[call-arg]
         packing=False,  # type: ignore[call-arg]
+    )
+
+    trainer = SFTTrainer(
+        model=modell,  # type: ignore[arg-type]
+        train_dataset=dataset,
+        processing_class=tokenizer,
+        args=training_args,
     )
 
     logger.info("Training gestartet …")
@@ -167,7 +167,7 @@ def trainiere_modell(config: AppConfig) -> Path:
     logger.info("Training abgeschlossen. Dauer: %s", dauer)
 
     # --- Modell speichern ---
-    trainer.model.save_pretrained(str(ausgabe_ordner))
+    trainer.save_model(str(ausgabe_ordner))
     tokenizer.save_pretrained(str(ausgabe_ordner))
     logger.info("Modell gespeichert: %s", ausgabe_ordner)
 
