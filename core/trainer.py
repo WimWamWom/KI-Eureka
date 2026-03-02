@@ -100,6 +100,7 @@ def trainiere_modell(config: AppConfig) -> Path:
     )
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
+    tokenizer.model_max_length = config.max_seq_length
 
     modell = AutoModelForCausalLM.from_pretrained(
         config.basis_modell,
@@ -147,10 +148,7 @@ def trainiere_modell(config: AppConfig) -> Path:
         group_by_length=True,
         lr_scheduler_type="cosine",
         report_to="none",
-        save_total_limit=3,
-        dataset_text_field="text",  # type: ignore[call-arg]
-        max_seq_length=config.max_seq_length,  # type: ignore[call-arg]
-        packing=False,  # type: ignore[call-arg]
+        save_total_limit=3
     )
 
     trainer = SFTTrainer(
